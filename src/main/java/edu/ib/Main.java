@@ -1,10 +1,7 @@
 package edu.ib;
 
 import org.apache.commons.math3.ode.FirstOrderIntegrator;
-import org.apache.commons.math3.ode.nonstiff.ClassicalRungeKuttaIntegrator;
-import org.apache.commons.math3.ode.nonstiff.EmbeddedRungeKuttaIntegrator;
-import org.apache.commons.math3.ode.nonstiff.EulerIntegrator;
-import org.apache.commons.math3.ode.nonstiff.MidpointIntegrator;
+import org.apache.commons.math3.ode.nonstiff.*;
 
 import java.util.SortedMap;
 
@@ -24,12 +21,19 @@ public class Main {
         modifiedEulerMethod.addStepHandler(new ConsoleStepper());
 
         //heuna
-//        FirstOrderIntegrator heune = new ;
-//        modifiedEulerMethod.addStepHandler(new ConsoleStepper());
+//        double[] c = {0.0, 1.0};
+//        double[][]a = {{0.0, 0.0},{1.0, 0.0}};
+//        double[]b={1.0/2.0, 1.0/2.0};
+//        FirstOrderIntegrator heun = new RungeKuttaIntegrator
+//                ("heun",c , a, b,
+//                        new ClassicalRungeKuttaStepInterpolator(),h);
+        //modifiedEulerMethod.addStepHandler(new ConsoleStepper());
 
         //RK4
         FirstOrderIntegrator rk4 = new ClassicalRungeKuttaIntegrator(h);
         rk4.addStepHandler(new ConsoleStepper());
+
+
 
         System.out.println();
         System.out.println();
@@ -39,7 +43,8 @@ public class Main {
         double [] x0 = {2};
         double [] x = new double[1];
 
-
+        rk4.integrate(simple, 0, x0, t, x);
+        System.out.println( x[0]+"\t");
 
         for(double i = 0.05; i>0.0001; i*=0.5){
 
@@ -61,7 +66,22 @@ public class Main {
             System.out.println( x[0]+"\t");
 
         }
+//        double X0=2;
+//        double X;
+//        for(double t0=0; t0<=(4-h);t0+=h){
+//            X=heunMethod(h,t0,X0,t0+h);
+//            System.out.println(t0+h+"\t"+X);
+//        }
 
 
+
+    }
+
+    public static double heunMethod( double h, double t0, double x0, double t){
+        return x0 +
+                h*
+                        (4*Math.exp(0.8*t0)-0.5*x0
+                                +4*Math.exp(0.8*t)-0.5*(x0+h*(4*Math.exp(0.8*t0)-0.5*x0)
+                        ))/2 ;
     }
 }
